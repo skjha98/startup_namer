@@ -2,6 +2,15 @@
 
 A new Flutter project. Based on Getting started with Flutter
 
+## Apk File
+
+You can find the location of apk at below mention location:
+build\app\outputs\flutter-apk\app-armeabi-v7a-release.apk
+[a relative link](app.apk)
+
+Or Import the project and run:
+flutter install
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
