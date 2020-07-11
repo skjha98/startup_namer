@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       home: RandomWords(),
       theme: ThemeData(
         primaryColor: Colors.white,
+        accentColor: Colors.amberAccent,
       ),
     );
   }
@@ -26,6 +27,7 @@ class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
   final _saved = <WordPair>[];
   final _biggerFont = TextStyle(fontSize: 18.0);
+  bool lightTheme = false;
 
   //Methods
   @override
@@ -34,6 +36,17 @@ class _RandomWordsState extends State<RandomWords> {
       appBar: AppBar(
         title: Text("Startup Name Generator"),
         actions: [
+          IconButton(
+            icon: Icon(
+              lightTheme ? Icons.brightness_7 : Icons.brightness_2,
+              color: Theme.of(context).accentColor,
+            ),
+            onPressed: () {
+              setState(() {
+                lightTheme = !lightTheme;
+              });
+            },
+          ),
           IconButton(
             icon: Icon(Icons.list),
             onPressed: _pushSaved,
@@ -45,29 +58,27 @@ class _RandomWordsState extends State<RandomWords> {
   }
 
   void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          final tiles = _saved.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(
-                  pair.asPascalCase,
-                  style: _biggerFont,
-                ),
-              );
-            }
-          );
-          final divided = ListTile.divideTiles(tiles: tiles, context: context).toList();
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("Saved Suggestions"),
-            ),
-            body: ListView(children: divided,),
-          );
-        }
-      )
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      final tiles = _saved.map((WordPair pair) {
+        return ListTile(
+          title: Text(
+            pair.asPascalCase,
+            style: _biggerFont,
+          ),
+        );
+      });
+      final divided =
+          ListTile.divideTiles(tiles: tiles, context: context).toList();
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Saved Suggestions"),
+        ),
+        body: ListView(
+          children: divided,
+        ),
+      );
+    }));
   }
 
   Widget _buildSuggestions() {
@@ -93,7 +104,7 @@ class _RandomWordsState extends State<RandomWords> {
         style: _biggerFont,
       ),
       trailing: Icon(alreadySaved ? Icons.star : Icons.star_border,
-          color: alreadySaved ? Colors.yellowAccent : null),
+          color: alreadySaved ? Theme.of(context).accentColor : null),
       onTap: () {
         setState(() {
           if (alreadySaved)
